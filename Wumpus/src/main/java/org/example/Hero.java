@@ -1,17 +1,23 @@
 package org.example;
+
 import java.io.Serializable;
+
 public class Hero implements Serializable {
     private Position position;
     private Direction direction;
     private int arrows; // Játékos nyilainak száma
     private Gold gold;  // Arany objektum
-
     private Position initialPosition; // Kezdő pozíció tárolása
 
-    public Hero(Position position, Direction direction, int arrows) {
+    public Hero(Position position) {
+        // Ellenőrizd, hogy a position ne legyen null
+        if (position == null) {
+            throw new IllegalArgumentException("Position cannot be null");
+        }
+
         this.position = position;
-        this.direction = direction;
-        this.arrows = arrows;
+        this.direction = Direction.FEL; // Kezdetben FEL irányba néz
+        this.arrows = 3; // Példa: Kezdetben 3 nyilunk van
         this.gold = new Gold();  // Új Gold objektum létrehozása kezdetben
         this.initialPosition = new Position(1, 5);
     }
@@ -23,11 +29,16 @@ public class Hero implements Serializable {
     public void setPosition(Position position) {
         this.position = position;
     }
+
     public Position getInitialPosition() {
         return initialPosition;  // Visszaadja a kezdeti pozíciót
     }
 
     public void move() {
+        if (position == null) {
+            throw new IllegalStateException("Position cannot be null");
+        }
+
         switch (direction) {
             case FEL:
                 position.setX(position.getX() - 1);
@@ -51,11 +62,15 @@ public class Hero implements Serializable {
     }
 
     private void checkGameCompletion() {
+        if (position == null || initialPosition == null) {
+            throw new IllegalStateException("Position and initialPosition cannot be null");
+        }
+
         System.out.println("Pozicio: " + position);  // Debug információ
         System.out.println("Kezdo pozicio: " + initialPosition);  // Debug információ
         System.out.println("Arany gyujtve: " + gold.isCollected());  // Debug információ
-
     }
+
     public void turn(Direction direction) {
         this.direction = direction;
     }
@@ -68,9 +83,11 @@ public class Hero implements Serializable {
     public int getGoldCount() {
         return gold.isCollected() ? 1 : 0;  // Visszaadja az arany darabszámát (1, ha gyűjtve van, egyébként 0)
     }
-    public int getArrows(){
+
+    public int getArrows() {
         return arrows;
     }
+
     public void shootArrow() {
         if (arrows > 0) {
             arrows--;

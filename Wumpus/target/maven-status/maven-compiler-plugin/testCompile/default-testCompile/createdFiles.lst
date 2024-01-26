@@ -1,3 +1,2 @@
-org\example\GameTest.class
-MainMenuTest.class
-WallTest.class
+HeroTest.class
+GameTest.class

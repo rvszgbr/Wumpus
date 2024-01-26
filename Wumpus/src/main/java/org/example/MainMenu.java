@@ -8,7 +8,7 @@ public class MainMenu implements Serializable {
     private static final long serialVersionUID = 1L;
     private static MainMenu currentMainMenu;
     private Game game;
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public MainMenu() {
         currentMainMenu = this;
@@ -21,11 +21,12 @@ public class MainMenu implements Serializable {
 
     public void returnToMainMenu() {
         System.out.println("\nVisszateres a fomenube...\n");
-        if (game != null) {
-            game.exitGame();
+        try {
+            Thread.sleep(1000); // Vár 1 másodpercet
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
-
     public static MainMenu getCurrentMainMenu() {
         return currentMainMenu;
     }
@@ -61,7 +62,7 @@ public class MainMenu implements Serializable {
                         if (mainMenu.getGame() != null) {
                             mainMenu.getGame().saveGame();
                         } else {
-                            System.out.println("Hiba: Nincs elindított játék.");
+                            System.out.println("Hiba: Nincs elindított jatek.");
                         }
                         break;
                     case "4":
@@ -75,16 +76,14 @@ public class MainMenu implements Serializable {
                         System.out.println("Ervenytelen valasztas. Kerlek, valassz ujra.");
                         break;
                 }
-            } catch (NoSuchElementException e) {
-                System.out.println("Nem található további sor a bemeneten.");
-                mainMenu.returnToMainMenu();
+            }finally {
             }
         }
     }
 
     private static void startNewGame(String userName, MainMenu mainMenu) {
         Wall wall = new Wall("C:\\Users\\rivas\\Wumpus\\src\\main\\resources\\palya.txt");
-        Hero hero = new Hero(new Position(1, 5), Direction.FEL, 3);
+        Hero hero = new Hero(new Position(1, 5));
         mainMenu.game = new Game(wall, hero, mainMenu);
         mainMenu.game.startNewGame(userName);
     }
@@ -102,7 +101,7 @@ public class MainMenu implements Serializable {
         System.out.println("\n==============================");
         System.out.println("===     WUMPUS      ===");
         System.out.println("==============================\n");
-        System.out.println("1. Uj játék indítasa");
+        System.out.println("1. Uj jatek inditasa");
         System.out.println("2. Jatek betoltese");
         System.out.println("3. Jatek mentese");
         System.out.println("4. Highscore megtekintese");

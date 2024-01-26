@@ -50,6 +50,7 @@ public class GameSave {
         }
     }
 
+
     public static Game loadGame(String userName, MainMenu mainMenu) {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);
              PreparedStatement statement = connection.prepareStatement("SELECT game_data FROM saved_games WHERE user_name = ? ORDER BY id DESC LIMIT 1")) {
